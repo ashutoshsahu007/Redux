@@ -7,7 +7,13 @@ const counterReducer = (state = { counter: 0 }, action) => {
   if (action.type === "decrement") {
     return { counter: state.counter - 1 };
   }
-  return state; // Always return state if action type doesn't match
+  if (action.type === "INCREMENTBY2") {
+    return { counter: state.counter + 2 };
+  }
+  if (action.type === "DECREMENTBY2") {
+    return { counter: state.counter - 2 };
+  }
+  return state; // Always return state if no match
 };
 
 const store = redux.createStore(counterReducer);
@@ -18,10 +24,8 @@ const counterSubscriber = () => {
 
 store.subscribe(counterSubscriber);
 
-// Increase counter by 5 (dispatch increment 5 times)
-for (let i = 0; i < 5; i++) {
-  store.dispatch({ type: "increment" });
-}
-
-// Decrease counter by 1
-store.dispatch({ type: "decrement" });
+// Example usage
+store.dispatch({ type: "increment" }); // +1 → 1
+store.dispatch({ type: "INCREMENTBY2" }); // +2 → 3
+store.dispatch({ type: "decrement" }); // -1 → 2
+store.dispatch({ type: "DECREMENTBY2" }); // -2 → 0
